@@ -5,4 +5,6 @@
     <string name="percent">Percent</string>
     <string name="update">Update</string>
     <string name="worker">Worker</string>
+    <string name="keep">Keep</string>
+    <string name="tasks">Tasks</string>
 </resources>
