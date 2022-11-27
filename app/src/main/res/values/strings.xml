@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Worker</string>
+    <string name="sum">Sum</string>
+    <string name="max">Max</string>
+    <string name="percent">Percent</string>
+    <string name="update">Update</string>
+    <string name="worker">Worker</string>
 </resources>

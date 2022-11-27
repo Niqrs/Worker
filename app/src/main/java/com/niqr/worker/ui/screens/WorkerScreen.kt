@@ -36,6 +36,9 @@ fun WorkerScreen() {
     Scaffold(
         bottomBar = {
             WorkerNavigationBar(navController, destinations)
+        },
+        floatingActionButton = {
+
         }
     ) { innerPadding ->
         AnimatedNavHost(
