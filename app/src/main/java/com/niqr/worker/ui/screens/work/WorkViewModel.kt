@@ -1,16 +1,22 @@
 package com.niqr.worker.ui.screens.work
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.niqr.worker.data.model.Work
+import com.niqr.worker.data.repository.WorkRepository
 import com.niqr.worker.ui.screens.work.model.WorkScreenUiState
 import com.niqr.worker.utils.numPattern
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class WorkViewModel @Inject constructor() : ViewModel() {
+class WorkViewModel @Inject constructor(
+    val repository: WorkRepository
+) : ViewModel() {
     private val _workScreenUiState = MutableStateFlow(WorkScreenUiState())
     val workScreenUiState = _workScreenUiState.asStateFlow()
 
@@ -42,8 +48,16 @@ class WorkViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-    fun onFabClick() {
-
+    fun onFabClick() { //TODO
+        viewModelScope.launch {
+            repository.updateWork(
+                Work(
+                    sum = workScreenUiState.value.sum.toDouble(),
+                    max = workScreenUiState.value.max.toDouble(),
+                    percent = workScreenUiState.value.percent.toDouble()
+                )
+            )
+        }
     }
 
     private fun onNumChange(newValue: String): String? {

@@ -1,6 +1,7 @@
 package com.niqr.worker.ui.screens.tasks.components
 
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -13,15 +14,15 @@ import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TasksTopBar() {
+fun TasksTopBar(
+    num: String,
+    description: @Composable () -> Unit
+) {
     TopAppBar(
-        title = { Text("75,440") },
+        title = { Text(num) },
         actions = {
-            Text(
-                text = "Total withdraw",
-                modifier = Modifier
-                    .padding(end = 12.dp)
-            )
+            description()
+            Spacer(modifier = Modifier.width(12.dp))
         },
         colors = TopAppBarDefaults.smallTopAppBarColors(
             containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(3.dp)

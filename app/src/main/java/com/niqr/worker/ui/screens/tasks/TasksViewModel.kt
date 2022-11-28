@@ -1,30 +1,39 @@
 package com.niqr.worker.ui.screens.tasks
 
 import androidx.lifecycle.ViewModel
-import com.niqr.worker.ui.screens.tasks.model.TasksItemUiState
-import com.niqr.worker.ui.screens.tasks.model.TasksScreenUiState
+import androidx.lifecycle.viewModelScope
+import com.niqr.worker.data.repository.TasksRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 @HiltViewModel
-class TasksViewModel @Inject constructor() : ViewModel() {
-    private val _tasksScreenUiState = MutableStateFlow(TasksScreenUiState(
-        listOf(
-            TasksItemUiState(true, 12500),
-            TasksItemUiState(true, 12500),
-            TasksItemUiState(true, 12500),
-            TasksItemUiState(true, 12500),
-            TasksItemUiState(true, 12500),
-            TasksItemUiState(true, 12500),
-            TasksItemUiState(true, 12500),
-            TasksItemUiState(true, 12500),
-            TasksItemUiState(true, 12500),
-            TasksItemUiState(true, 12500),
-            TasksItemUiState(true, 12490),
-        )
-    ))
-    val tasksScreenUiState = _tasksScreenUiState.asStateFlow()
+class TasksViewModel @Inject constructor(
+    repository: TasksRepository
+) : ViewModel() {
+    val tasksScreenUiState = repository.getWork().stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.Eagerly,
+        initialValue = null
+    )
+//        TasksScreenUiState(
+//            total = 86000,
+//            keep = 1000,
+//            tasks = listOf(
+//                TasksItemUiState(true, 12500),
+//                TasksItemUiState(true, 12500),
+//                TasksItemUiState(true, 12500),
+//                TasksItemUiState(true, 12500),
+//                TasksItemUiState(true, 12500),
+//                TasksItemUiState(true, 12500),
+//                TasksItemUiState(true, 12500),
+//                TasksItemUiState(true, 12500),
+//                TasksItemUiState(true, 12500),
+//                TasksItemUiState(true, 12500),
+//                TasksItemUiState(true, 12490),
+//            )
+//        )
+//    val tasksScreenUiState = _tasksScreenUiState.asStateFlow()
 
 }
