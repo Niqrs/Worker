@@ -8,34 +8,38 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.niqr.worker.R
 import com.niqr.worker.ui.screens.tasks.components.TasksBottomBar
+import com.niqr.worker.ui.screens.tasks.components.TasksItem
 import com.niqr.worker.ui.screens.tasks.components.TasksTopBar
+import com.niqr.worker.ui.screens.tasks.model.TasksItemUiState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TasksScreen(viewModel: TasksViewModel) {
-    val state = viewModel.tasksScreenUiState.collectAsState()
+    val state by viewModel.tasksScreenUiState.collectAsState()
 
-    if (state.value != null) {
+    if (state != null) {
         Scaffold(
             topBar = {
                 TasksTopBar(
-                    num = "76800",
+                    num = state!!.totalWithdraw.toString(),
                     description = { Text(text = stringResource(R.string.total_withdraw)) }
                 )
             },
             bottomBar = {
                 TasksBottomBar(
-                    num = "700",
+                    num = state!!.keep.toString(),
                     description = { Text(stringResource(R.string.keep)) }
                 )
             }
@@ -52,14 +56,11 @@ fun TasksScreen(viewModel: TasksViewModel) {
                         .wrapContentWidth())
                     Spacer(modifier = Modifier.height(4.dp))
                 }
-//                items(state.tasks) {
-//                    TasksItem(
-//                        task = TasksItemUiState(isDone = it.isDone, num = it.num),
-//                        onDoneChange = {}
-//                    )
-//                }
-                items(10) {
-                    Text(text = state.toString())
+                items(state!!.tasks) {
+                    TasksItem(
+                        task = TasksItemUiState(isDone = it.isDone, num = it.num),
+                        onDoneChange = {}
+                    )
                 }
                 item {
                     Spacer(modifier = Modifier.height(128.dp))
@@ -70,7 +71,6 @@ fun TasksScreen(viewModel: TasksViewModel) {
         Column {
             Text(text = "Null")
             Text(text = state.toString())
-
         }
     }
 }

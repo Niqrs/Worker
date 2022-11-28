@@ -9,7 +9,6 @@ import javax.inject.Inject
 
 class InMemoryWorkerRepository @Inject constructor(): WorkerRepository {
     private val workChannel = Channel<Work>()
-//    private val work = MutableStateFlow<Work?>(null)
 
     override suspend fun updateWork(newWork: Work) {
         Log.d("Work", newWork.toString())
