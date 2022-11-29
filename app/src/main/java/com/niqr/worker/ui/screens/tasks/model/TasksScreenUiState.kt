@@ -1,8 +1,10 @@
 package com.niqr.worker.ui.screens.tasks.model
 
+import com.niqr.worker.data.model.Tasks
 import com.niqr.worker.data.model.Work
 
 data class TasksScreenUiState(
+    val id: Int,
     val sum: Double,
     val max: Double,
     val percent: Double,
@@ -12,11 +14,12 @@ data class TasksScreenUiState(
 )
 
 fun Work.toUiState(): TasksScreenUiState {
-    val tasks = this.tasks.map {
+    val tasks = this.tasks.list.map {
         TasksItemUiState(it.first, it.second)
     }
 
     return TasksScreenUiState(
+        id = this.id,
         sum = this.sum,
         max = this.max,
         percent = this.percent,
@@ -32,11 +35,12 @@ fun TasksScreenUiState.toEntity(): Work {
     }
 
     return Work(
+        id = this.id,
         sum = this.sum,
         max = this.max,
         percent = this.percent,
         totalWithdraw = this.totalWithdraw,
         keep = this.keep,
-        tasks = tasks
+        tasks = Tasks(tasks)
     )
 }

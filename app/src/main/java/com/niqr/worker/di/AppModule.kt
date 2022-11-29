@@ -1,12 +1,16 @@
 package com.niqr.worker.di
 
-import com.niqr.worker.data.repository.InMemoryWorkerRepository
+import android.content.Context
+import androidx.room.Room
+import com.niqr.worker.data.db.WorkDatabase
 import com.niqr.worker.data.repository.TasksRepository
 import com.niqr.worker.data.repository.WorkRepository
+import com.niqr.worker.data.repository.WorkerDatabaseRepository
 import com.niqr.worker.data.repository.WorkerRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -16,8 +20,20 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideRepository(): WorkerRepository {
-        return InMemoryWorkerRepository()
+    fun provideWorkDb(
+        @ApplicationContext context: Context
+    ): WorkDatabase = Room.databaseBuilder(
+        context.applicationContext,
+        WorkDatabase::class.java,
+        "work_database"
+    ).build()
+
+    @Singleton
+    @Provides
+    fun provideRepository(
+        database: WorkDatabase
+    ): WorkerRepository {
+        return WorkerDatabaseRepository(database.workDao())
     }
 
     @Provides fun provideWorkRepository(

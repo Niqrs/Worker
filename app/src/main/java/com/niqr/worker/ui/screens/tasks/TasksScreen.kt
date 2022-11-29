@@ -1,6 +1,5 @@
 package com.niqr.worker.ui.screens.tasks
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.niqr.worker.R
@@ -29,48 +29,54 @@ import com.niqr.worker.ui.screens.tasks.model.TasksItemUiState
 fun TasksScreen(viewModel: TasksViewModel) {
     val state by viewModel.tasksScreenUiState.collectAsState()
 
-    if (state != null) {
-        Scaffold(
-            topBar = {
-                TasksTopBar(
-                    num = state!!.totalWithdraw.toString(),
-                    description = { Text(text = stringResource(R.string.total_withdraw)) }
-                )
-            },
-            bottomBar = {
-                TasksBottomBar(
-                    num = state!!.keep.toString(),
-                    description = { Text(stringResource(R.string.keep)) }
-                )
+    Scaffold(
+        topBar = {
+            TasksTopBar(
+                num = state?.totalWithdraw?.toString() ?: "0",
+                description = { Text(text = stringResource(R.string.total_withdraw)) }
+            )
+        },
+        bottomBar = {
+            TasksBottomBar(
+                num = state?.keep?.toString() ?: "0",
+                description = { Text(stringResource(R.string.keep)) }
+            )
+        }
+    ) { innerPadding ->
+        LazyColumn(
+            Modifier
+                .padding(innerPadding)
+                .fillMaxSize()
+        ) {
+            item {
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(text = stringResource(R.string.tasks), modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentWidth())
+                Spacer(modifier = Modifier.height(4.dp))
             }
-        ) { innerPadding ->
-            LazyColumn(
-                Modifier
-                    .padding(innerPadding)
-                    .fillMaxSize()
-            ) {
+            if (state == null) {
                 item {
-                    Spacer(modifier = Modifier.height(4.dp))
-                    Text(text = stringResource(R.string.tasks), modifier = Modifier
-                        .fillMaxWidth()
-                        .wrapContentWidth())
-                    Spacer(modifier = Modifier.height(4.dp))
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text(
+                        text = "There is no tasks",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentWidth()
+                            .alpha(0.5f)
+                    )
                 }
+            } else {
                 itemsIndexed(state!!.tasks) { index, it ->
                     TasksItem(
                         task = TasksItemUiState(isDone = it.isDone, num = it.num),
                         onDoneChange = { isDone -> viewModel.updateTask(index, isDone) }
                     )
                 }
-                item {
-                    Spacer(modifier = Modifier.height(128.dp))
-                }
             }
-        }
-    } else {
-        Column {
-            Text(text = "Null")
-            Text(text = state.toString())
+            item {
+                Spacer(modifier = Modifier.height(128.dp))
+            }
         }
     }
 }

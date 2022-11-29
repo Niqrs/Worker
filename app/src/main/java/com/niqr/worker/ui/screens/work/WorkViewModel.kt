@@ -7,6 +7,7 @@ import com.niqr.worker.ui.screens.work.model.WorkScreenUiState
 import com.niqr.worker.ui.screens.work.model.toEntity
 import com.niqr.worker.utils.numPattern
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -49,8 +50,8 @@ class WorkViewModel @Inject constructor(
     }
 
     fun onFabClick() {
-        viewModelScope.launch {
-            repository.updateWork(
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.insertWork(
                 workScreenUiState.value.toEntity()
             )
         }

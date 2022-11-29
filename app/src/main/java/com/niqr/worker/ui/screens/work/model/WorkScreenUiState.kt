@@ -1,5 +1,6 @@
 package com.niqr.worker.ui.screens.work.model
 
+import com.niqr.worker.data.model.Tasks
 import com.niqr.worker.data.model.Work
 import com.niqr.worker.utils.calculateTasks
 import kotlin.math.roundToInt
@@ -21,11 +22,12 @@ fun WorkScreenUiState.toEntity(): Work {
     }
 
     return Work(
+        id = 1,//Currently there is only one work in database
         sum = sum,
         max = max,
         percent = percent,
         totalWithdraw = totalWithdraw,
         keep = keep,
-        tasks = tasks
+        tasks = Tasks(tasks)
     )
 }

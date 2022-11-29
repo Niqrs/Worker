@@ -6,11 +6,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.receiveAsFlow
 import javax.inject.Inject
 
-class InMemoryWorkerRepository @Inject constructor(): WorkerRepository {
+class WorkerInMemoryRepository @Inject constructor(): WorkerRepository {
     private val workChannel = Channel<Work>()
     private var currentWork: Work? = null
 
-    override suspend fun updateWork(newWork: Work) {
+    override suspend fun insertWork(newWork: Work) {
         currentWork = newWork
         workChannel.send(currentWork!!)
     }
@@ -19,15 +19,16 @@ class InMemoryWorkerRepository @Inject constructor(): WorkerRepository {
         return workChannel.receiveAsFlow()
     }
 
-    override suspend fun updateTask(index: Int, isDone: Boolean) {
-        val newTasks = currentWork!!.tasks.toMutableList().let {
-            it[index] = Pair(isDone, it[index].second)
-            it
-        }
+    override suspend fun updateWork(work: Work) {
+//        val newTasks = currentWork!!.tasks.toMutableList().let {
+//            it[index] = Pair(isDone, it[index].second)
+//            it
+//        }
 
-        currentWork = currentWork!!.copy(
-            tasks = newTasks
-        )
+//        currentWork = currentWork!!.copy(
+//            tasks = newTasks
+//        )
+        currentWork = work
         workChannel.send(currentWork!!)
     }
 }

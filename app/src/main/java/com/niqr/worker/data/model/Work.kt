@@ -1,10 +1,16 @@
 package com.niqr.worker.data.model
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity
 data class Work(
-    val sum: Double,
-    val max: Double,
-    val percent: Double,
-    val totalWithdraw: Int,
-    val keep: Double,
-    val tasks: List<Pair<Boolean, Int>>
+    @PrimaryKey(/*autoGenerate = true*/) val id: Int,
+    @ColumnInfo val sum: Double,
+    @ColumnInfo val max: Double,
+    @ColumnInfo val percent: Double,
+    @ColumnInfo val totalWithdraw: Int,
+    @ColumnInfo val keep: Double,
+    @ColumnInfo val tasks: Tasks
 )
