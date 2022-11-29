@@ -5,4 +5,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface TasksRepository {
     fun getWork(): Flow<Work>
+    suspend fun updateTask(index: Int, isDone: Boolean)
 }
