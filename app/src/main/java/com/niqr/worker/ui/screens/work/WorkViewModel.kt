@@ -18,7 +18,12 @@ import javax.inject.Inject
 class WorkViewModel @Inject constructor(
     val repository: WorkRepository
 ) : ViewModel() {
-    private val _workScreenUiState = MutableStateFlow(WorkScreenUiState())
+    private val _workScreenUiState = MutableStateFlow(
+        WorkScreenUiState(
+            max = "10000",
+            percent = "1.5"
+        )
+    )
     val workScreenUiState = _workScreenUiState.asStateFlow()
 
     fun onSumChange(newValue: String) {

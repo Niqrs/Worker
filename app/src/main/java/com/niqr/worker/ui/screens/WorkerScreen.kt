@@ -2,7 +2,7 @@ package com.niqr.worker.ui.screens
 
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -13,6 +13,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
@@ -49,17 +50,8 @@ fun WorkerScreen() {
                     slideIntoContainer(
                         towards = AnimatedContentScope.SlideDirection.Right,
                         animationSpec = tween(
-                            durationMillis = 250,
-                            easing = LinearEasing // interpolator
-                        )
-                    )
-                },
-                exitTransition = {
-                    slideOutOfContainer(
-                        towards = AnimatedContentScope.SlideDirection.Left,
-                        animationSpec = tween(
-                            durationMillis = 250,
-                            easing = LinearEasing
+                            durationMillis = 400,
+                            easing = FastOutSlowInEasing // interpolator
                         )
                     )
                 }
@@ -67,9 +59,15 @@ fun WorkerScreen() {
                 val viewModel: WorkViewModel = hiltViewModel()
                 WorkScreen(
                     viewModel = viewModel,
-//                    navigateToTasks = {
-//                        navController.navigate(NavigationTree.Tasks.name)
-//                    }
+                    navigateToTasks = {
+                        navController.navigate(NavigationTree.Tasks.name) {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    }
                 )
             }
             composable(
@@ -78,17 +76,8 @@ fun WorkerScreen() {
                     slideIntoContainer(
                         towards = AnimatedContentScope.SlideDirection.Left,
                         animationSpec = tween(
-                            durationMillis = 250,
-                            easing = LinearEasing // interpolator
-                        )
-                    )
-                },
-                exitTransition = {
-                    slideOutOfContainer(
-                        towards = AnimatedContentScope.SlideDirection.Right,
-                        animationSpec = tween(
-                            durationMillis = 250,
-                            easing = LinearEasing
+                            durationMillis = 400,
+                            easing = FastOutSlowInEasing // interpolator
                         )
                     )
                 }

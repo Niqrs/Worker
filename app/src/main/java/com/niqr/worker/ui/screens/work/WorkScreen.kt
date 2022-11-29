@@ -31,7 +31,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun WorkScreen(
     viewModel: WorkViewModel,
-//    navigateToTasks: () -> Unit
+    navigateToTasks: () -> Unit
 ) {
     val state by viewModel.workScreenUiState.collectAsState()
 
@@ -59,7 +59,7 @@ fun WorkScreen(
                 onClick = {
                     if (viewModel.areFieldsNotEmpty()) {
                         viewModel.onFabClick()
-//                        navigateToTasks()
+                        navigateToTasks()
                     }
                     else
                         scope.launch(Dispatchers.IO) {
