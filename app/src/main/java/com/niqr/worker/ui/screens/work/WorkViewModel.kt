@@ -49,6 +49,13 @@ class WorkViewModel @Inject constructor(
         }
     }
 
+    fun areFieldsNotEmpty(): Boolean {
+        val state = workScreenUiState.value
+        return state.sum.isNotEmpty() &&
+               state.max.isNotEmpty() &&
+               state.percent.isNotEmpty()
+    }
+
     fun onFabClick() {
         viewModelScope.launch(Dispatchers.IO) {
             repository.insertWork(

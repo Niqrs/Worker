@@ -36,9 +36,6 @@ fun WorkerScreen() {
     Scaffold(
         bottomBar = {
             WorkerNavigationBar(navController, destinations)
-        },
-        floatingActionButton = {
-
         }
     ) { innerPadding ->
         AnimatedNavHost(
@@ -68,7 +65,12 @@ fun WorkerScreen() {
                 }
             ) {
                 val viewModel: WorkViewModel = hiltViewModel()
-                WorkScreen(viewModel)
+                WorkScreen(
+                    viewModel = viewModel,
+//                    navigateToTasks = {
+//                        navController.navigate(NavigationTree.Tasks.name)
+//                    }
+                )
             }
             composable(
                 NavigationTree.Tasks.name,

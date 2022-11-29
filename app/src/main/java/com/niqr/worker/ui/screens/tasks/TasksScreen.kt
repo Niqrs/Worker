@@ -55,7 +55,7 @@ fun TasksScreen(viewModel: TasksViewModel) {
                     .wrapContentWidth())
                 Spacer(modifier = Modifier.height(4.dp))
             }
-            if (state == null) {
+            if (state?.tasks?.isEmpty() != false) {
                 item {
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(

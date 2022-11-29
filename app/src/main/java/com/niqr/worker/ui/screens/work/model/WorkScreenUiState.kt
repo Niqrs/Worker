@@ -15,9 +15,14 @@ fun WorkScreenUiState.toEntity(): Work {
     val sum = this.sum.toDouble()
     val max = this.max.toDouble()
     val percent = this.percent.toDouble()
+
     val totalWithdraw = ((1 - percent/100.0)*sum).roundToInt()
     val keep = sum-totalWithdraw
-    val tasks = calculateTasks(totalWithdraw, max).map {
+
+    val tasks = if (totalWithdraw == 0)
+        emptyList()
+    else
+        calculateTasks(totalWithdraw, max).map {
         Pair(false, it)
     }
 
