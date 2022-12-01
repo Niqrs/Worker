@@ -8,4 +8,7 @@
     <string name="keep">Keep</string>
     <string name="tasks">Tasks</string>
     <string name="total_withdraw">Total withdraw</string>
+    <string name="save">Save</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="default_fields">Default Fields</string>
 </resources>

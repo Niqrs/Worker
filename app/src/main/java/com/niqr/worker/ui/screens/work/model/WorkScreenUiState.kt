@@ -7,8 +7,11 @@ import kotlin.math.roundToInt
 
 data class WorkScreenUiState(
     val sum: String = "",
-    val max: String = "",
-    val percent: String = ""
+    val max: String = "0",
+    val percent: String = "0",
+    val isPreferencesOpen: Boolean = false,
+    val preferencesMax: String = "",
+    val preferencesPercent: String = ""
 )
 
 fun WorkScreenUiState.toEntity(): Work {

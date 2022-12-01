@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -22,6 +21,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.niqr.worker.R
 import com.niqr.worker.ui.screens.work.components.NumberField
+import com.niqr.worker.ui.screens.work.components.PreferencesDialog
 import com.niqr.worker.ui.screens.work.components.WorkFloatingActionButton
 import com.niqr.worker.ui.screens.work.components.WorkTopBar
 import kotlinx.coroutines.Dispatchers
@@ -38,21 +38,24 @@ fun WorkScreen(
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
 
+    if (state.isPreferencesOpen)
+        PreferencesDialog(
+            maxValue = state.preferencesMax,
+            percentValue = state.preferencesPercent,
+            onMaxChange = viewModel::onPreferencesMaxChange,
+            onPercentChange = viewModel::onPreferencesPercentChange,
+            onDismissRequest = viewModel::onPreferencesDismissRequest,
+            onConfirmClick = viewModel::onPreferencesConfirmClick
+        )
+
     Scaffold(
         snackbarHost = {
             SnackbarHost(hostState = snackbarHostState)
         },
         topBar = {
-            WorkTopBar {
-                scope.launch(Dispatchers.IO) {
-                    snackbarHostState.currentSnackbarData?.dismiss()
-                    snackbarHostState.showSnackbar(
-                        message = "There is no settings yet.",
-                        withDismissAction = true,
-                        duration = SnackbarDuration.Short
-                    )
-                }
-            }
+            WorkTopBar(
+                onSettingsClick = viewModel::onPreferencesClick
+            )
         },
         floatingActionButton = {
             WorkFloatingActionButton(
